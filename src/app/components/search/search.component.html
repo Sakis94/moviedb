@@ -1,0 +1,105 @@
+<div class="mt-4">
+	<div class="row">
+		<div class="col-sm-6 d-flex align-items-center">
+			<h2 class="m-0">Movie database v3.0</h2>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<form class="md-form mr-auto mb-4">
+			<div class="btn-group w-100">
+				<input class="form-control p-3 m-0 rounded-sm rounded-left" type="text" placeholder="Avengers, Men in Black, Toy Story, Child's Play" aria-label="Search"
+				       [(ngModel)]="keyword" [ngModelOptions]="{standalone: true}">
+					<div class="btn-group">
+					<button mdbBtn color="indigo" class="p-3 m-0" mdbWavesEffect type="button" (click)="getMovies()">Search</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="row" *ngIf="movieResults != null">
+	<div class="col-sm-12">
+		<div class="row align-items-stretch py-0 my-2 grey lighten-5 rounded-sm" *ngFor="let movie of movieResults.results; let i = index">
+			<div class="col-sm-1 pl-0">
+				<img class="poster rounded-left" [src]="getPoster(movie.poster_path)" />
+			</div>
+			<div class="col-sm-9 d-flex align-items-center">
+				<h4 class="m-0 title" (click)="showDetails(movie.id)">{{ movie.title }}</h4>
+			</div>
+			<div class="col-sm-2 d-flex align-items-center justify-content-end">
+				<h5 class="mb-0 mr-3">{{ movie.vote_average }}/10<i class="fa fa-star ml-3 vote-star" aria-hidden="true"></i></h5>
+				<h5 class="mb-0 love-it" (click)="openFavorites(movie)" *ngIf="collections"><i class="fas fa-heart red-text"></i></h5>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row" *ngIf="movieResults != null">
+	<div class="col-sm-12 text-center">
+		<nav>
+			<ul class="pagination pg-blue m-0 justify-content-center">
+
+				<li class="page-item" [ngClass]="(movieResults.page <= 1) ? 'disabled': ''">
+					<a class="page-link" tabindex="-1" mdbWavesEffect>&laquo;</a>
+				</li>
+
+				<li class="page-item mx-1" *ngFor="let in of counter(movieResults.total_pages); let i = index;" [ngClass]="(i+1 == movieResults.page)? 'active': ''" (click)="setPagination(i+1)">
+					<a class="page-link" mdbWavesEffect>{{ i+1 }}</a>
+				</li>
+
+				<li class="page-item">
+					<a class="page-link" mdbWavesEffect>&raquo;</a>
+				</li>
+
+			</ul>
+		</nav>
+	</div>
+</div>
+
+<div mdbModal #detailsModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="movieDetailsModal" aria-hidden="true" data-backdrop="false" (closed)="onCloseDetails()">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close pull-right" aria-label="Close" (click)="detailsModal.hide()">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title w-100" id="myModalLabel">Movie description</h4>
+			</div>
+			<div class="modal-body">
+				<div *ngIf="movieDetails">
+					<app-details [movieDetails]="movieDetails"></app-details>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" mdbBtn color="primary" class="waves-light" mdbWavesEffect (click)="detailsModal.hide()">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div mdbModal #favoriteModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="movieLove" aria-hidden="true" data-backdrop="false">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close pull-right" aria-label="Close" (click)="favoriteModal.hide()">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title w-100" id="myModalLabel">Movie description</h4>
+			</div>
+			<div class="modal-body">
+				<ul class="list-group fav-list">
+					<li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let collection of collections" (click)="appendFavorite(collection.id)">
+						{{ collection.title }}
+						<span class="badge badge-primary badge-pill" *ngIf="collection.movies">{{ collection.movies.length }}</span>
+					</li>
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<button type="button" mdbBtn color="link" class="waves-light" mdbWavesEffect (click)="favoriteModal.hide()">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

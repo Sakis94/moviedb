@@ -1,0 +1,40 @@
+.movie-card {
+    width: 20%;
+
+    img {
+        max-height: 278px;
+    }
+    
+    & > div {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .movie-details {
+        position: absolute;
+        bottom: 0px; left: 0px; width: 100%;
+        max-height: 75%;
+        overflow: hidden;
+        background-color: rgba( 240, 240, 240, 1 );
+        opacity: 0;
+        margin-bottom: -100%;
+        transition: opacity .35s ease-in-out, margin .35s ease-in-out;
+    }
+
+    &:hover .movie-details {
+        opacity: .90;
+        margin-bottom: 0%;
+    }
+
+    .remove {
+        position: absolute;
+        top: 15px; right: 15px;
+        border-radius: 15px;
+        cursor: pointer;
+        opacity: 0;
+    }
+
+    &:hover .remove {
+        opacity: .95;
+    }
+}

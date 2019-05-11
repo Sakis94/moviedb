@@ -1,0 +1,99 @@
+<div class="my-4">
+    <div class="row">
+        <div class="col-sm-6 d-flex align-items-center">
+            <h2 class="m-0">My collections</h2>
+        </div>
+        <div class="col-sm-6 text-right">
+            <button mdbBtn type="button" color="light-green" class="p-3 m-0 z-depth-0" mdbWavesEffect (click)="newCollectionModal.show()">
+                Create<i class="fas fa-plus ml-2 mr-1"></i>
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="collections">
+    <div class="row mt-4" *ngFor="let collection of collections">
+        <div class="col-sm-12 py-3">
+            <div class="blue px-2 py-3 rounded-top">
+                <h5 class="m-0 text-white d-block">{{ collection.title }}</h5>
+            </div>
+            <div class="grey lighten-4 px-2 py-3 rounded-bottom">
+                <div class="row mb-2">
+                    <div class="col-sm-8 d-flex align-items-center">
+                        <i class="mx-0 d-block">{{ collection.description }}</i>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <button mdbBtn type="button" color="link" class="px-2 py-2" mdbWavesEffect (click)="deleteCollection(collection.id)">Delete</button>
+                    </div>
+                </div>
+                <div class="movies p-0" *ngIf="collection.movies">
+                    <div class="d-inline-block movie-card m-0 p-2" *ngFor="let movie of collection.movies">
+                        <div class="rounded-sm">
+                            <small class="remove red py-1 px-2 text-white z-depth-1" (click)="removeMovie(collection.id, movie.id)">
+                                REMOVE<i class="fas fa-times ml-1"></i>
+                            </small>
+                            <div class="text-center">
+                                <img [src]="getPoster(movie.poster_path)" class="mx-auto w-100" />
+                            </div>
+                            <div class="movie-details p-2">
+                                <h5 class="text-dark mt-2 border-bottom border-light pb-2 pointer" (click)="showDetails(movie.id)">{{ movie.title }}</h5>
+                                <small class="text-dark mt-2">{{ movie.overview }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="movies p-4 mb-2" *ngIf="!collection.movies">
+                    <h2 class="mb-0 text-center blue-grey-text">This collection is empty.</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div mdbModal #newCollectionModal="mdbModal" class="modal fade top" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="newCollectionModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">New collection</h4>
+            </div>
+            <div class="modal-body">
+                <div class="md-form">
+                    <input mdbInput type="text" id="form1" class="form-control" [(ngModel)]="collectionForm.title">
+                    <label for="form1" class="">Title</label>
+                </div>
+                <div class="md-form">
+                    <textarea type="text" id="form8" class="md-textarea form-control" mdbInput [(ngModel)]="collectionForm.description"></textarea>
+                    <label for="form8">Description</label>
+                </div>
+            </div>
+            <div class="modal-footer text-right">
+                <button type="button" mdbBtn color="link" class="waves-light p-3" aria-label="Close" (click)="newCollectionModal.hide()" mdbWavesEffect>Cancel</button>
+                <button type="button" mdbBtn color="success" class="waves-light p3" mdbWavesEffect (click)="createCollection()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div mdbModal #detailsModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="movieDetailsModal" aria-hidden="true" data-backdrop="false" (closed)="onCloseDetails()">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close pull-right" aria-label="Close" (click)="detailsModal.hide()">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title w-100" id="myModalLabel">Movie description</h4>
+			</div>
+			<div class="modal-body">
+				<div *ngIf="movieDetails">
+					<app-details [movieDetails]="movieDetails"></app-details>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" mdbBtn color="primary" class="waves-light" mdbWavesEffect (click)="detailsModal.hide()">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

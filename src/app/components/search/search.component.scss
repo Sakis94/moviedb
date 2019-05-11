@@ -1,0 +1,19 @@
+img.poster {
+    min-width: 77px;
+    max-height: 115px;
+    opacity: .95;
+}
+
+.vote-star {
+    font-size: 25px;
+    color: #ffee58;
+}
+
+.title, .fav-list > li {
+    cursor: pointer;
+}
+
+.love-it {
+    cursor: pointer;
+    :hover { opacity: .85; }
+}

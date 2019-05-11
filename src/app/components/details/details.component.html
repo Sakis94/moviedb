@@ -1,0 +1,42 @@
+<div *ngIf="movieDetails">
+	<div class="row mt-4">
+		<div class="col-sm-3">
+			<img [src]="getPoster(movieDetails.poster_path)" alt="" class="cover rounded-sm">
+		</div>
+		<div class="col-sm-9">
+			<h3 class="m-0 text-dark">{{ movieDetails.title }}</h3>
+			<p class="my-3 blue-grey-text">{{ movieDetails.overview }}</p>
+		</div>
+	</div>
+
+	<div class="row mt-5">
+		<div class="col-sm-6">
+			<p class="mb-3">
+				<span class="text-body mr-1">Budget:</span>
+				<span class="text-black-50">$ {{ movieDetails.budget }}</span>
+			</p>
+			<p class="mb-3">
+				<span class="text-body mr-1">Revenue:</span>
+				<span class="text-black-50">$ {{ movieDetails.revenue }}</span>
+			</p>
+			<p class="mb-0">
+				<span class="text-body mr-1">Release-date:</span>
+				<span class="text-black-50">{{ movieDetails.release_date }}</span>
+			</p>
+		</div>
+		<div class="col-sm-6">
+			<h5 class="text-right mb-3">
+				<span class="mr-2">{{ movieDetails.vote_average }}/10</span>
+				<i class="fa fa-star text-warning" aria-hidden="true"></i>
+			</h5>
+			<h5 class="text-right mb-3">
+				<span class="mr-2">{{ movieDetails.vote_count }} Votes</span>
+				<i class="fa fa-chart-line light-blue-text" aria-hidden="true"></i>
+			</h5>
+			<h6 class="text-right mb-0">
+				<span class="mr-2">Spoken languages</span>
+				<span *ngFor="let lang of movieDetails.spoken_languages" class="mr-1 p-1 teal lighten-5">{{ lang.name }}</span>
+			</h6>
+		</div>
+	</div>
+</div>
